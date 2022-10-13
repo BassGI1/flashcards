@@ -28,24 +28,20 @@ class CardDeck{
       }
     })
     this.updateIds()
-  }
-  moveCard(id, position) {
-      let card = this.cards.filter(x => x.id == id)[0]
-      this.deleteCard(id)
-      this.cards.splice(position - 1, 0, card)
-      this.updateIds()
-  }
+   }
 }
 import Welcome from './components/Welcome.vue'
 import DisplayCard from './components/DisplayCard.vue';
+import TutorialSection from './components/TutorialSection.vue'
   export default {
     data() {
         return {
-            data: JSON.parse(localStorage.getItem("CardDecks")) || {User: "Bassam"},
+            data: JSON.parse(localStorage.getItem("CardDecks")) || {User: 'Bassam'},
             renderWelcome: false,
             User: null,
             animateButton: false,
-            renderHello: true
+            renderHello: true,
+            currentTab: ''
         };
     },
     mounted() {
@@ -63,9 +59,12 @@ import DisplayCard from './components/DisplayCard.vue';
             else{
               this.renderWelcome = true
             }
+        },
+        tabChange(tab) {
+          this.currentTab = tab
         }
     },
-    components: { Welcome, DisplayCard }
+    components: { Welcome, DisplayCard, TutorialSection }
 }
 </script>
 
@@ -73,15 +72,25 @@ import DisplayCard from './components/DisplayCard.vue';
   <div class="app">
     
     <Welcome v-if="renderWelcome" @Return="(x) => {
+      data = {}
       renderWelcome = false
       User = x
     }"/>
 
     <div v-if="!renderWelcome" style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-wrap: wrap;">
       <h1 class="fade" v-if="renderHello">Welcome {{User}}!</h1>
-      <div v-if="!renderHello" style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-wrap: wrap;">
-        <DisplayCard />
-        <DisplayCard />
+      <div v-if="!renderHello && currentTab == ''" style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; position: absolute; left: 0px; top: 0px;">
+        <DisplayCard :text="'Your Library'" @tabchange="tabChange('Your Library')"/>
+        <DisplayCard :text="'Tutorial'" @tabchange="tabChange('Tutorial')"/>
+        <DisplayCard :text="'Settings'" @tabchange="tabChange('Settings')"/>
+        <DisplayCard :text="'About'" @tabchange="tabChange('About')"/>
+      </div>
+      <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-wrap: wrap;" v-if="!renderHello && currentTab == 'Tutorial'">
+        <TutorialSection :Image="'placeholder1.gif'"/>
+        <TutorialSection :Image="'placeholder2.gif'"/>
+        <TutorialSection :Image="'placeholder3.gif'"/>
+        <TutorialSection :Image="'placeholder4.gif'"/>
+        <div class="returnbutton" @click="tabChange('')">Exit Tutorial</div>
       </div>
     </div>
 
@@ -111,5 +120,21 @@ import DisplayCard from './components/DisplayCard.vue';
     0% {opacity: 1;}
     66.66% {opacity: 1;}
     100% {opacity: 0;}
+  }
+  .returnbutton{
+    position: absolute;
+    bottom: 2vh;
+    right: 2vh;
+    cursor: pointer;
+    font-size: 1rem;
+    background-color: rgb(175, 122, 225);
+    width: 7vw;
+    height: 7vh;
+    border-radius: 2vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    background-clip: content-box
   }
 </style>

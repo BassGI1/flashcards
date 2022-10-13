@@ -53,7 +53,7 @@ import TutorialSection from './TutorialSection.vue'
       <div class="startbutton" @click="FinishWelcome()" v-bind:class="{animateButton: animateButton}"> {{ !animateButton ? 'Submit' : '' }} </div>
     </div>
     <div v-if="stage2 && !tutorial" class="welcome" v-bind:class="{fade: fade}">
-        <h1 style="width: 100%; text-align: center; margin-top: -10vh;">Would you like the to view tutorial?</h1>
+        <h1 style="width: 100%; text-align: center; margin-top: -10vh;">Would you like to view the tutorial?</h1>
         <div class="button" @click="handleTutorial()">
             Yes
         </div>
