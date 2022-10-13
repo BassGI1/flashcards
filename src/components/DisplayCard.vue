@@ -17,7 +17,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .displaycard{
         width: 40%;
         height: 40%;

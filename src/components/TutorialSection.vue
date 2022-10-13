@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
     .quarter{
         width: 50%;
         height: 50%;

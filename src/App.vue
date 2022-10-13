@@ -36,7 +36,7 @@ import TutorialSection from './components/TutorialSection.vue'
   export default {
     data() {
         return {
-            data: JSON.parse(localStorage.getItem("CardDecks")) || {User: 'Bassam'},
+            data: JSON.parse(localStorage.getItem("CardDecks")),
             renderWelcome: false,
             User: null,
             animateButton: false,
