@@ -35,7 +35,9 @@
         props: ["data", "user"],
         data() {
             return {
-                decks: []
+                decks: [],
+                createPush: false,
+                createPull: false
             }
         },
         mounted() {
@@ -45,7 +47,14 @@
         },
         methods: {
             handleCreate() {
-                
+                if (!this.createPush) {
+                    this.createPush = true
+                    this.createPull = false
+                }
+                else {
+                    this.createPull = true
+                    this.createPush = false
+                }
             }
         }
     }
@@ -53,9 +62,13 @@
 
 <template>
     <div class="backgrounddiv">
-        <div class="button" style="left: 2vh; top: 2vh;">Create</div>
+        <div class="button" style="left: 2vh; top: 2vh;" @click="handleCreate()">Create</div>
         <div v-for="deck in decks">
             {{deck.name}}
+        </div>
+        <div v-if="createPush" style="width: 150vw; height: 150vh; position: fixed; z-index: 2;" @click="handleCreate()"></div>
+        <div class="creatediv" v-bind:class="{animateUp: createPush, animateDown: createPull}">
+            <nav class="navbar">Create New Deck</nav>
         </div>
     </div>
 </template>
@@ -88,5 +101,43 @@
         position: absolute;
         background-color: orange;
         color: purple;
+    }
+    .creatediv{
+        position: fixed;
+        height: 65vh;
+        width: 45vw;
+        background-color: orange;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        border-radius: 2vh;
+        border: 1vh solid rgb(127, 2, 185);
+        top: 150vh;
+        z-index: 3;
+        color: purple;
+    }
+    @keyframes animateUp{
+        0% {top: 150vh;}
+        100% {transform: translateY(-133vh);}
+    }
+    .animateUp{
+        animation: animateUp 1.5s forwards;
+    }
+    @keyframes animateDown{
+        0% {transform: translateY(-133vh);}
+        100% {top: 150vh;}
+    }
+    .animateDown{
+        animation: animateDown 1.5s forwards;
+    }
+    .navbar{
+        height: 20%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        border-bottom: 0.5vh solid rgb(127, 2, 185);
+        cursor: default;
     }
 </style>
