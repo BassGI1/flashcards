@@ -1,38 +1,8 @@
 <script>
-class Card{
-  constructor(q, a, id) {
-    this.id = id
-    this.question = q
-    this.answer = a
-  }
-}
-class CardDeck{
-  constructor(name, creator) {
-    this.name = name
-    this.creator = creator
-    this.cards = []
-  }
-  newCard(question, answer) {
-    this.cards.push(new Card(question, answer, this.cards.length + 1))
-  }
-  updateIds() {
-    this.cards = this.cards.filter(card => card != undefined)
-    this.cards.forEach((x, i) => {
-      x.id = i + 1
-    })
-  }
-  deleteCard(id) {
-    this.cards = this.cards.map(card => {
-      if (card.id != id){
-        return card
-      }
-    })
-    this.updateIds()
-   }
-}
 import Welcome from './components/Welcome.vue'
 import DisplayCard from './components/DisplayCard.vue';
 import TutorialSection from './components/TutorialSection.vue'
+import Library from './components/Library.vue'
   export default {
     data() {
         return {
@@ -64,7 +34,7 @@ import TutorialSection from './components/TutorialSection.vue'
           this.currentTab = tab
         }
     },
-    components: { Welcome, DisplayCard, TutorialSection }
+    components: { Welcome, DisplayCard, TutorialSection, Library }
 }
 </script>
 
@@ -85,15 +55,15 @@ import TutorialSection from './components/TutorialSection.vue'
         <DisplayCard :text="'Settings'" @tabchange="tabChange('Settings')"/>
         <DisplayCard :text="'About'" @tabchange="tabChange('About')"/>
       </div>
-      <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-wrap: wrap;" v-if="!renderHello && currentTab == 'Tutorial'">
+      <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; background-color: rgb(189, 0, 189); color: orange;" v-if="!renderHello && currentTab == 'Tutorial'">
         <TutorialSection :Image="'placeholder1.gif'"/>
         <TutorialSection :Image="'placeholder2.gif'"/>
         <TutorialSection :Image="'placeholder3.gif'"/>
         <TutorialSection :Image="'placeholder4.gif'"/>
         <div class="returnbutton" @click="tabChange('')">Exit Tutorial</div>
       </div>
+      <Library v-if="!renderHello && currentTab == 'Your Library'" :data="data ? data.cardDecks : null" :user="User"/>
     </div>
-
   </div>
 </template>
 
