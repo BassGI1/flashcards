@@ -1,4 +1,35 @@
 <script>
+    class Card{
+    constructor(q, a, id) {
+        this.id = id
+        this.question = q
+        this.answer = a
+    }
+    }
+    class CardDeck{
+    constructor(name, creator) {
+        this.name = name
+        this.creator = creator
+        this.cards = []
+    }
+    newCard(question, answer) {
+        this.cards.push(new Card(question, answer, this.cards.length + 1))
+    }
+    updateIds() {
+        this.cards = this.cards.filter(card => card != undefined)
+        this.cards.forEach((x, i) => {
+        x.id = i + 1
+        })
+    }
+    deleteCard(id) {
+        this.cards = this.cards.map(card => {
+        if (card.id != id){
+            return card
+        }
+        })
+        this.updateIds()
+    }
+    }
 import Welcome from './components/Welcome.vue'
 import DisplayCard from './components/DisplayCard.vue';
 import TutorialSection from './components/TutorialSection.vue'
@@ -19,6 +50,8 @@ import Library from './components/Library.vue'
         setTimeout(() => {
           this.renderHello = false
         }, 3000);
+        // this.data.cardDecks.push(new CardDeck('test', this.User))
+        // localStorage.setItem("CardDecks", JSON.stringify(this.data))
     },
     methods: {
         CheckIfNewUser() {
@@ -62,7 +95,7 @@ import Library from './components/Library.vue'
         <TutorialSection :Image="'placeholder4.gif'"/>
         <div class="returnbutton" @click="tabChange('')">Exit Tutorial</div>
       </div>
-      <Library v-if="!renderHello && currentTab == 'Your Library'" :data="data ? data.cardDecks : null" :user="User"/>
+      <Library v-if="!renderHello && currentTab == 'Your Library'" :data="data ? data.cardDecks : null" :user="User" @return="currentTab = ''"/>
     </div>
   </div>
 </template>
@@ -97,7 +130,8 @@ import Library from './components/Library.vue'
     right: 2vh;
     cursor: pointer;
     font-size: 1rem;
-    background-color: rgb(175, 122, 225);
+    background-color: orange;
+    color: purple;
     width: 7vw;
     height: 7vh;
     border-radius: 2vh;

@@ -36,8 +36,13 @@
         data() {
             return {
                 decks: [],
-                createPush: false,
-                createPull: false
+                animations: {
+                    createPush: false,
+                    createPull: false,
+                    importPush: false,
+                    importPull: false
+                },
+                activeDeck: null
             }
         },
         mounted() {
@@ -46,30 +51,53 @@
             })
         },
         methods: {
-            handleCreate() {
-                if (!this.createPush) {
-                    this.createPush = true
-                    this.createPull = false
+            handleButton(string) {
+                if (!this.animations[`${string}Push`]) {
+                    this.animations[`${string}Push`] = true
+                    this.animations[`${string}Pull`] = false
                 }
                 else {
-                    this.createPull = true
-                    this.createPush = false
+                    this.animations[`${string}Pull`] = true
+                    this.animations[`${string}Push`] = false
                 }
+            },
+            returner() {
+                this.$emit('return')
+            },
+            setActiveDeck(deck) {
+                this.activeDeck = deck
+                console.log(this.activeDeck)
+            },
+            createDeck(name) {
+
             }
-        }
+        },
+        emits: ['return']
     }
 </script>
 
 <template>
     <div class="backgrounddiv">
-        <div class="button" style="left: 2vh; top: 2vh;" @click="handleCreate()">Create</div>
-        <div v-for="deck in decks">
-            {{deck.name}}
+        <h1 style="position: fixed; top: 0vh; font-size: 4rem">Your Library</h1>
+        <div class="button" style="left: 5vh; top: 5vh;" @click="handleButton('create')">Create</div>
+        <div class="deckdiv">
+            <div v-for="deck in decks">
+                <div class="singledeck" @click="setActiveDeck(deck)">
+                    {{ deck.name }}
+                </div>
+            </div>
         </div>
-        <div v-if="createPush" style="width: 150vw; height: 150vh; position: fixed; z-index: 2;" @click="handleCreate()"></div>
-        <div class="creatediv" v-bind:class="{animateUp: createPush, animateDown: createPull}">
+        <div v-if="animations['createPush']" style="width: 150vw; height: 150vh; position: fixed; z-index: 2;" @click="handleButton('create')"></div>
+        <div v-if="animations['importPush']" style="width: 150vw; height: 150vh; position: fixed; z-index: 2;" @click="handleButton('import')"></div>
+        <div class="creatediv" v-bind:class="{animateUp: animations.createPush, animateDown: animations.createPull}">
             <nav class="navbar">Create New Deck</nav>
+            <h4 style="color: purple; font-size: 5vh; margin-top: -1vh;">Name:<input type="text" placeholder="Enter Deck Name" style="height: 5vh; margin-left: 2vw; border-radius: 1vh;"></h4>
         </div>
+        <div class="creatediv" v-bind:class="{animateUp: animations.importPush, animateDown: animations.importPull}">
+            <nav class="navbar">Import Deck</nav>
+        </div>
+        <div class="button" style="right: 5vh; top: 5vh;" @click="handleButton('import')">Import</div>
+        <div class="button" style="right: 5vh; bottom: 5vh;" @click="returner()">return</div>
     </div>
 </template>
 
@@ -139,5 +167,33 @@
         font-size: 2.5rem;
         border-bottom: 0.5vh solid rgb(127, 2, 185);
         cursor: default;
+    }
+    .deckdiv{
+        background-color: rgb(127, 2, 185);
+        height: 66vh;
+        width: 90vw;
+        margin-top: 6vh;
+        border-radius: 3vh;
+        border: 1vh solid purple;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0vh 13vh;
+        overflow-y: scroll;
+    }
+    .singledeck{
+        margin-top: 3vh;
+        width: 25vw;
+        height: 25vw;
+        background-color: black;
+        margin-left: 1vh;
+        margin-bottom: 3vh;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: orange;
+        color: purple;
+        border-radius: 2vh;
+        font-size: 4rem;
     }
 </style>
