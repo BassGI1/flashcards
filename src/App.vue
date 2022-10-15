@@ -65,6 +65,10 @@ import Library from './components/Library.vue'
         },
         tabChange(tab) {
           this.currentTab = tab
+        },
+        newDeck(x) {
+          this.data.cardDecks = x
+          localStorage.setItem('CardDecks', JSON.stringify(this.data))
         }
     },
     components: { Welcome, DisplayCard, TutorialSection, Library }
@@ -95,7 +99,7 @@ import Library from './components/Library.vue'
         <TutorialSection :Image="'placeholder4.gif'"/>
         <div class="returnbutton" @click="tabChange('')">Exit Tutorial</div>
       </div>
-      <Library v-if="!renderHello && currentTab == 'Your Library'" :data="data ? data.cardDecks : null" :user="User" @return="currentTab = ''"/>
+      <Library v-if="!renderHello && currentTab == 'Your Library'" :data="data ? data.cardDecks : null" :user="User" @return="currentTab = ''" @newdeck="x => newDeck(x)"/>
     </div>
   </div>
 </template>
