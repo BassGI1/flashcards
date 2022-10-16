@@ -208,6 +208,6 @@ import CardView from "./CardView.vue";
         background-color: orange;
         color: purple;
         border-radius: 2vh;
-        font-size: 4rem;
+        font-size: 3rem;
     }
 </style>
