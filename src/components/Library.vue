@@ -89,6 +89,26 @@ import CardView from "./CardView.vue";
         },
         handleReturnfromCardView() {
             this.renderDeck = false
+            this.animations = {
+                createPush: false,
+                createPull: false,
+                importPush: false,
+                importPull: false
+            }
+        },
+        handleDeleteDeck(deck) {
+            this.decks = this.decks.filter(x => x.id != deck.id)
+            this.animations = {
+                createPush: false,
+                createPull: false,
+                importPush: false,
+                importPull: false
+            }
+            this.renderDeck = false
+            this.decks.forEach((x, i) => {
+                x.id = i + 1
+            })
+            localStorage.setItem('CardDecks', JSON.stringify({User: this.user, cardDecks: this.decks}))
         }
     },
     emits: ["return", "newdeck"],
@@ -122,7 +142,7 @@ import CardView from "./CardView.vue";
         <div class="button" style="right: 5vh; top: 5vh;" @click="handleButton('import')">Import</div>
         <div class="button" style="right: 5vh; bottom: 3vh;" @click="returner()">return</div>
     </div>
-    <CardView v-if="renderDeck" :data="activeDeck" @save="x => handleCardViewSave(x)" @return="handleReturnfromCardView()"/>
+    <CardView v-if="renderDeck" :data="activeDeck" @save="x => handleCardViewSave(x)" @return="handleReturnfromCardView()" @delete="x => handleDeleteDeck(x)"/>
 </template>
 
 <style scoped>

@@ -70,9 +70,13 @@ class Card{
             },
             returner() {
                 this.$emit("return")
+            },
+            deleter() {
+                this.save()
+                this.$emit("delete", this.deck)
             }
         },
-        emits: ["save", "return"]
+        emits: ["save", "return", "delete"]
     }
 </script>
 
@@ -114,12 +118,15 @@ class Card{
                 </div>
         </div>
         <div v-if="renderDeleteCardDiv" class="deletecarddiv">
-                <h3 style="margin-right: 2vw;" v-if="renderDivData">Are you sure you want to delete this card?</h3>
-                <div class="button" style="position: relative; margin-right: 2vw;" v-if="renderDivData" @click="handleDelete()">
+                <h3 style="margin-right: 2vw; margin-top: -4vh;" v-if="renderDivData">Are you sure you want to delete this card?</h3>
+                <div class="button" style="position: relative; margin-right: 2vw; margin-top: -8vh;" v-if="renderDivData" @click="handleDelete()">
                     Yes
                 </div>
-                <div class="button" v-if="renderDivData" style="position: relative; margin-left: 2vw;" @click="handleCancel()">
+                <div class="button" v-if="renderDivData" style="position: relative; margin-left: 2vw; margin-top: -8vh;" @click="handleCancel()">
                     No
+                </div>
+                <div class="button" style="bottom: 3vh;" @click="renderDeleteDeckDiv = true" v-if="renderDivData">
+                    Delete Deck
                 </div>
         </div>
         <div class="button" style="right: 5vh; bottom: 5vh;" @click="save()">
@@ -128,16 +135,17 @@ class Card{
         <div class="button" style="left: 5vh; bottom: 5vh;" @click="returner()">
             Return
         </div>
-        <div class="button" style="bottom: 5vh;" @click="renderDeleteDeckDiv = true">
-            Delete Deck
-        </div>
         <div v-if="renderDeleteDeckDiv" style="position: absolute; width: 100vw; height: 100vh; background-color: black; opacity: 0.5; display: flex; align-items: center; justify-content: center;">
         </div>
         <div v-if="renderDeleteDeckDiv" style="width: 60vh; height: 60vh; background-color: orange; position: absolute; border-radius: 2vh; color: purple; display: flex;
          align-items: center; justify-content: center; flex-wrap: wrap;">
             <h3 style="margin-bottom: -15vh;">Are you sure you want to delete this Deck?</h3>
-            <div class="button" style="background-color: rgb(175, 122, 225); position: relative; margin-right: 1vw;">Yes</div>
-            <div class="button" style="background-color: rgb(175, 122, 225); position: relative; margin-left: 1vw;" @click="renderDeleteDeckDiv = false">No</div>
+            <div class="button" style="background-color: rgb(175, 122, 225); position: relative; margin-right: 1vw;" @click="deleter()">Yes</div>
+            <div class="button" style="background-color: rgb(175, 122, 225); position: relative; margin-left: 1vw;" @click="() => {
+                renderDeleteDeckDiv = false
+                renderDeleteCardDiv = false
+                renderDivData = false
+            }">No</div>
         </div>
         <h1 v-if="saved" class="save">Saved!</h1>
     </div>
