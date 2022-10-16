@@ -8,7 +8,8 @@ import CardView from "./CardView.vue";
     }
     }
     class CardDeck{
-    constructor(name, creator) {
+    constructor(name, creator, id) {
+        this.id = id
         this.name = name
         this.creator = creator
         this.cards = []
@@ -49,9 +50,11 @@ import CardView from "./CardView.vue";
         };
     },
     mounted() {
-        this.data.forEach(x => {
-            this.decks.push(x);
-        });
+        if (this.data){
+            this.data.forEach(x => {
+                this.decks.push(x);
+            });
+        }
     },
     methods: {
         handleButton(string) {
@@ -72,13 +75,20 @@ import CardView from "./CardView.vue";
             this.renderDeck = true;
         },
         createDeck() {
-            this.decks.push(new CardDeck(this.newCardName, this.user));
+            this.decks.push(new CardDeck(this.newCardName, this.user, this.decks.length + 1));
             this.newCardName = null;
             this.handleButton("create");
             this.$emit("newdeck", this.decks);
         },
         importDeck() {
             let obj = JSON.parse(`{}`);
+        },
+        handleCardViewSave(deck) {
+            this.decks.splice(deck.id - 1, 1, deck)
+            localStorage.setItem('CardDecks', JSON.stringify({User: this.user, cardDecks: this.decks}))
+        },
+        handleReturnfromCardView() {
+            this.renderDeck = false
         }
     },
     emits: ["return", "newdeck"],
@@ -110,9 +120,9 @@ import CardView from "./CardView.vue";
             <div class="button" style="background-color: rgb(189, 0, 189); color: orange; position: absolute; bottom: 10vh;" @click="importDeck()">Submit</div>
         </div>
         <div class="button" style="right: 5vh; top: 5vh;" @click="handleButton('import')">Import</div>
-        <div class="button" style="right: 5vh; bottom: 5vh;" @click="returner()">return</div>
+        <div class="button" style="right: 5vh; bottom: 3vh;" @click="returner()">return</div>
     </div>
-    <CardView v-if="renderDeck" :data="activeDeck"/>
+    <CardView v-if="renderDeck" :data="activeDeck" @save="x => handleCardViewSave(x)" @return="handleReturnfromCardView()"/>
 </template>
 
 <style scoped>
@@ -209,5 +219,9 @@ import CardView from "./CardView.vue";
         color: purple;
         border-radius: 2vh;
         font-size: 3rem;
+    }
+    ::-webkit-scrollbar{
+        width: 0px;
+        height: 0px;
     }
 </style>

@@ -18,7 +18,9 @@ class Card{
                 renderDeleteCardDiv: false,
                 renderDivData: false,
                 question: null,
-                answer: null
+                answer: null,
+                saved: false,
+                renderDeleteDeckDiv: false
             }
         },
         mounted() {
@@ -58,8 +60,19 @@ class Card{
                 this.currentCard = this.deck.cards[0] || null
                 this.renderDivData = false
                 this.renderDeleteCardDiv = false
+            },
+            save() {
+                this.saved = true
+                setTimeout(() => {
+                    this.saved = false
+                }, 2000)
+                this.$emit("save", this.deck)
+            },
+            returner() {
+                this.$emit("return")
             }
-        }
+        },
+        emits: ["save", "return"]
     }
 </script>
 
@@ -86,13 +99,17 @@ class Card{
                 </div>
             </div>
         </div>
-        <h1 v-if="!currentCard">There's nothing here . . .</h1>
+        <h1 v-if="!deck || !deck.cards.length">There's nothing here . . .</h1>
         <div v-if="renderNewCardDiv" class="newcarddiv">
                 <h3 v-if="renderDivData" style="width: 100%;"><span style="margin-left: 3vw;">Question: <input type="text" placeholder="Question" v-model="question" style="margin-right: 3vw; border-radius: 1vh;"> Answer: <input type="text" placeholder="Answer" v-model="answer" style="border-radius: 1vh;"></span></h3>
                 <div class="button" style="position: relative; margin-right: 2vw;" v-if="renderDivData" @click="handleCancel()">
                     Cancel
                 </div>
-                <div class="button" v-if="renderDivData" style="position: relative; margin-left: 2vw;" @click="handleCreate(question, answer)">
+                <div class="button" v-if="renderDivData" style="position: relative; margin-left: 2vw;" @click="() => {
+                    if (question){
+                        handleCreate(question, answer)
+                    }
+                }">
                     Create
                 </div>
         </div>
@@ -105,10 +122,28 @@ class Card{
                     No
                 </div>
         </div>
+        <div class="button" style="right: 5vh; bottom: 5vh;" @click="save()">
+            Save
+        </div>
+        <div class="button" style="left: 5vh; bottom: 5vh;" @click="returner()">
+            Return
+        </div>
+        <div class="button" style="bottom: 5vh;" @click="renderDeleteDeckDiv = true">
+            Delete Deck
+        </div>
+        <div v-if="renderDeleteDeckDiv" style="position: absolute; width: 100vw; height: 100vh; background-color: black; opacity: 0.5; display: flex; align-items: center; justify-content: center;">
+        </div>
+        <div v-if="renderDeleteDeckDiv" style="width: 60vh; height: 60vh; background-color: orange; position: absolute; border-radius: 2vh; color: purple; display: flex;
+         align-items: center; justify-content: center; flex-wrap: wrap;">
+            <h3 style="margin-bottom: -15vh;">Are you sure you want to delete this Deck?</h3>
+            <div class="button" style="background-color: rgb(175, 122, 225); position: relative; margin-right: 1vw;">Yes</div>
+            <div class="button" style="background-color: rgb(175, 122, 225); position: relative; margin-left: 1vw;" @click="renderDeleteDeckDiv = false">No</div>
+        </div>
+        <h1 v-if="saved" class="save">Saved!</h1>
     </div>
 </template>
 
-<style>
+<style scoped>
     .backgrounddiv{
         background-color: rgb(189, 0, 189);
         position: absolute;
@@ -259,5 +294,14 @@ class Card{
         border-radius: 0px 0px 0px 2vh;
         border-bottom: 2px solid black;
         border-left: 2px solid black;
+    }
+    .save{
+        position: absolute;
+        font-size: 5rem;
+        color: black;
+        animation: save 2s forwards;
+    }
+    @keyframes save{
+        100%{opacity: 0;}
     }
 </style>

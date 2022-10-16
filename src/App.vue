@@ -69,6 +69,13 @@ import Library from './components/Library.vue'
         newDeck(x) {
           this.data.cardDecks = x
           localStorage.setItem('CardDecks', JSON.stringify(this.data))
+        },
+        handleReturnfromWelcome(x) {
+          this.data = {User: x, cardDecks: []}
+          this.renderWelcome = false
+          this.User = x
+          localStorage.setItem('CardDecks', JSON.stringify(this.data))
+          console.log(this.data)
         }
     },
     components: { Welcome, DisplayCard, TutorialSection, Library }
@@ -78,11 +85,7 @@ import Library from './components/Library.vue'
 <template>
   <div class="app">
     
-    <Welcome v-if="renderWelcome" @Return="(x) => {
-      data = {}
-      renderWelcome = false
-      User = x
-    }"/>
+    <Welcome v-if="renderWelcome" @return="x => handleReturnfromWelcome(x)"/>
 
     <div v-if="!renderWelcome" style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-wrap: wrap;">
       <h1 class="fade" v-if="renderHello">Welcome {{User}}!</h1>
