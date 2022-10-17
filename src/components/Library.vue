@@ -213,7 +213,9 @@ import CardView from "./CardView.vue";
             </div>
             <nav class="navbar" v-if="coded">Your Code is:</nav>
             <div style="display: inline-block; word-break: break-word; margin: 2vw;">
-                <p v-if="coded" style="cursor: pointer;" @click="copyText()">{{code}}</p>
+                <div style="height: 60%; overflow: scroll">
+                    <p v-if="coded" style="cursor: pointer;" @click="copyText()">{{code}}</p>
+                </div>
                 <h2 v-if="coded" style="text-align: center; margin-top: 5vh;">Click to copy to clipboard</h2>
             </div>
         </div>
