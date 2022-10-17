@@ -34,6 +34,7 @@ import Welcome from './components/Welcome.vue'
 import DisplayCard from './components/DisplayCard.vue';
 import TutorialSection from './components/TutorialSection.vue'
 import Library from './components/Library.vue'
+import Settings from './components/Settings.vue'
   export default {
     data() {
         return {
@@ -50,8 +51,6 @@ import Library from './components/Library.vue'
         setTimeout(() => {
           this.renderHello = false
         }, 3000);
-        // this.data.cardDecks.push(new CardDeck('test', this.User))
-        // localStorage.setItem("CardDecks", JSON.stringify(this.data))
     },
     methods: {
         CheckIfNewUser() {
@@ -77,7 +76,7 @@ import Library from './components/Library.vue'
           localStorage.setItem('CardDecks', JSON.stringify(this.data))
         }
     },
-    components: { Welcome, DisplayCard, TutorialSection, Library }
+    components: { Welcome, DisplayCard, TutorialSection, Library, Settings }
 }
 </script>
 
@@ -87,7 +86,7 @@ import Library from './components/Library.vue'
     <Welcome v-if="renderWelcome" @return="x => handleReturnfromWelcome(x)"/>
 
     <div v-if="!renderWelcome" style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-wrap: wrap;">
-      <h1 class="fade" v-if="renderHello">Welcome {{User}}!</h1>
+      <h1 class="fade" v-if="renderHello" style="cursor: default;">Welcome {{User}}!</h1>
       <div v-if="!renderHello && currentTab == ''" style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; position: absolute; left: 0px; top: 0px;">
         <DisplayCard :text="'Your Library'" @tabchange="tabChange('Your Library')"/>
         <DisplayCard :text="'Tutorial'" @tabchange="tabChange('Tutorial')"/>
@@ -102,6 +101,7 @@ import Library from './components/Library.vue'
         <div class="returnbutton" @click="tabChange('')">Exit Tutorial</div>
       </div>
       <Library v-if="!renderHello && currentTab == 'Your Library'" :data="data ? data.cardDecks : null" :user="User" @return="currentTab = ''" @newdeck="x => newDeck(x)"/>
+      <Settings v-if="!renderHello && currentTab == 'Settings'" @return="currentTab = ''" :user="User"/>
     </div>
   </div>
 </template>
