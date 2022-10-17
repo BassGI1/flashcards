@@ -120,7 +120,11 @@ class Card{
                     Create
                 </div>
         </div>
-        <div class="toggle" @click="testmode = !testmode">
+        <div class="toggle" @click="() => {
+            if (deck && deck.cards.length){
+                testmode = !testmode
+            }
+        }">
             <div class="toggleball" v-bind:class="{moveright: testmode, moveleft: !testmode}"></div>
         </div>
         <div v-if="renderDeleteCardDiv && !testmode" class="deletecarddiv">
