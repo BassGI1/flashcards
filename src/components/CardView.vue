@@ -1,4 +1,5 @@
 <script>
+import TestMode from './TestMode.vue'
 class Card{
     constructor(q, a, id) {
         this.id = id
@@ -7,82 +8,84 @@ class Card{
     }
     }
     export default {
-        name: "CardView",
-        props: ["data"],
-        data() {
-            return {
-                deck: null,
-                currentCard: this.data.cards[0] || null,
-                flipped: false,
-                renderNewCardDiv: false,
-                renderDeleteCardDiv: false,
-                renderDivData: false,
-                question: null,
-                answer: null,
-                saved: false,
-                renderDeleteDeckDiv: false
-            }
+    name: "CardView",
+    props: ["data"],
+    data() {
+        return {
+            deck: null,
+            currentCard: this.data.cards[0] || null,
+            flipped: false,
+            renderNewCardDiv: false,
+            renderDeleteCardDiv: false,
+            renderDivData: false,
+            question: null,
+            answer: null,
+            saved: false,
+            renderDeleteDeckDiv: false,
+            testmode: false
+        };
+    },
+    mounted() {
+        this.deck = { ...this.data };
+    },
+    methods: {
+        handleCreateClick() {
+            this.renderNewCardDiv = true;
+            setTimeout(() => { this.renderDivData = true; }, 1000);
         },
-        mounted() {
-            this.deck = {...this.data}
+        handleCreate(q, a) {
+            this.deck.cards.push(new Card(q, a, this.deck.cards.length + 1));
+            this.question = null;
+            this.answer = null;
+            this.renderNewCardDiv = false;
+            this.renderDivData = false;
+            this.flipped = false;
+            this.renderDeleteCardDiv = false;
         },
-        methods: {
-            handleCreateClick() {
-                this.renderNewCardDiv = true
-                setTimeout(() => {this.renderDivData = true}, 1000)
-            },
-            handleCreate(q, a) {
-                this.deck.cards.push(new Card(q, a, this.deck.cards.length + 1))
-                this.question = null
-                this.answer = null
-                this.renderNewCardDiv = false
-                this.renderDivData = false
-                this.flipped = false
-                this.renderDeleteCardDiv = false
-            },
-            handleCancel() {
-                this.question = null
-                this.answer = null
-                this.renderNewCardDiv = false
-                this.renderDivData = false
-                this.renderDeleteCardDiv = false
-            },
-            handleDeleteClick() {
-                this.renderDeleteCardDiv = true
-                setTimeout(() => {this.renderDivData = true}, 1000)
-            },
-            handleDelete() {
-                let temp = this.deck.cards.filter(card => card.id != this.currentCard.id)
-                temp.forEach((x, i) => {
-                    x.id = i + 1
-                })
-                this.deck.cards = temp
-                this.currentCard = this.deck.cards[0] || null
-                this.renderDivData = false
-                this.renderDeleteCardDiv = false
-            },
-            save() {
-                this.saved = true
-                setTimeout(() => {
-                    this.saved = false
-                }, 2000)
-                this.$emit("save", this.deck)
-            },
-            returner() {
-                this.$emit("return")
-            },
-            deleter() {
-                this.save()
-                this.$emit("delete", this.deck)
-            }
+        handleCancel() {
+            this.question = null;
+            this.answer = null;
+            this.renderNewCardDiv = false;
+            this.renderDivData = false;
+            this.renderDeleteCardDiv = false;
         },
-        emits: ["save", "return", "delete"]
-    }
+        handleDeleteClick() {
+            this.renderDeleteCardDiv = true;
+            setTimeout(() => { this.renderDivData = true; }, 1000);
+        },
+        handleDelete() {
+            let temp = this.deck.cards.filter(card => card.id != this.currentCard.id);
+            temp.forEach((x, i) => {
+                x.id = i + 1;
+            });
+            this.deck.cards = temp;
+            this.currentCard = this.deck.cards[0] || null;
+            this.renderDivData = false;
+            this.renderDeleteCardDiv = false;
+        },
+        save() {
+            this.saved = true;
+            setTimeout(() => {
+                this.saved = false;
+            }, 2000);
+            this.$emit("save", this.deck);
+        },
+        returner() {
+            this.$emit("return");
+        },
+        deleter() {
+            this.save();
+            this.$emit("delete", this.deck);
+        }
+    },
+    emits: ["save", "return", "delete"],
+    components: { TestMode }
+}
 </script>
 
 <template>
     <div class="backgrounddiv">
-        <nav class="topbar">
+        <nav class="topbar" v-if="!testmode">
             <div class="button" style="left: 5vh; top: 5vh;" @click="handleCreateClick()">Create New</div>
             <div class="button" style="right: 5vh; top: 5vh;" @click="handleDeleteClick()">Delete Card</div>
             <div class="topdiv">
@@ -93,7 +96,7 @@ class Card{
                 </div>
             </div>
         </nav>
-        <div class="scene" @click="flipped = !flipped" v-if="currentCard">
+        <div class="scene" @click="flipped = !flipped" v-if="currentCard && !testmode" >
             <div class="card" v-bind:class="{'is-flipped': flipped}">
                 <div class="card__face card__face--front">
                     <h1 style="margin: 4vh;">{{ currentCard.question }}</h1>
@@ -103,8 +106,8 @@ class Card{
                 </div>
             </div>
         </div>
-        <h1 v-if="!deck || !deck.cards.length">There's nothing here . . .</h1>
-        <div v-if="renderNewCardDiv" class="newcarddiv">
+        <h1 v-if="!deck || !deck.cards.length && !testmode">There's nothing here . . .</h1>
+        <div v-if="renderNewCardDiv && !testmode" class="newcarddiv">
                 <h3 v-if="renderDivData" style="width: 100%;"><span style="margin-left: 3vw;">Question: <input type="text" placeholder="Question" v-model="question" style="margin-right: 3vw; border-radius: 1vh;"> Answer: <input type="text" placeholder="Answer" v-model="answer" style="border-radius: 1vh;"></span></h3>
                 <div class="button" style="position: relative; margin-right: 2vw;" v-if="renderDivData" @click="handleCancel()">
                     Cancel
@@ -117,7 +120,10 @@ class Card{
                     Create
                 </div>
         </div>
-        <div v-if="renderDeleteCardDiv" class="deletecarddiv">
+        <div class="toggle" @click="testmode = !testmode">
+            <div class="toggleball" v-bind:class="{moveright: testmode, moveleft: !testmode}"></div>
+        </div>
+        <div v-if="renderDeleteCardDiv && !testmode" class="deletecarddiv">
                 <h3 style="margin-right: 2vw; margin-top: -4vh;" v-if="renderDivData">Are you sure you want to delete this card?</h3>
                 <div class="button" style="position: relative; margin-right: 2vw; margin-top: -8vh;" v-if="renderDivData" @click="handleDelete()">
                     Yes
@@ -129,13 +135,13 @@ class Card{
                     Delete Deck
                 </div>
         </div>
-        <div class="button" style="right: 5vh; bottom: 5vh;" @click="save()">
+        <div class="button" style="right: 5vh; bottom: 5vh;" @click="save()" v-if="!testmode">
             Save
         </div>
-        <div class="button" style="left: 5vh; bottom: 5vh;" @click="returner()">
+        <div class="button" style="left: 5vh; bottom: 5vh;" @click="returner()" v-if="!testmode">
             Return
         </div>
-        <div v-if="renderDeleteDeckDiv" style="position: absolute; width: 100vw; height: 100vh; background-color: black; opacity: 0.5; display: flex; align-items: center; justify-content: center;">
+        <div v-if="renderDeleteDeckDiv && !testmode" style="position: absolute; width: 100vw; height: 100vh; background-color: black; opacity: 0.5; display: flex; align-items: center; justify-content: center;">
         </div>
         <div v-if="renderDeleteDeckDiv" style="width: 60vh; height: 60vh; background-color: orange; position: absolute; border-radius: 2vh; color: purple; display: flex;
          align-items: center; justify-content: center; flex-wrap: wrap;">
@@ -149,6 +155,7 @@ class Card{
         </div>
         <h1 v-if="saved" class="save">Saved!</h1>
     </div>
+    <TestMode v-if="testmode" :data="deck.cards"/>
 </template>
 
 <style scoped>
@@ -311,5 +318,42 @@ class Card{
     }
     @keyframes save{
         100%{opacity: 0;}
+    }
+    .toggle{
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 11vh;
+        height: 3.5vh;
+        position: absolute;
+        bottom: 1vh;
+        background-color: rgb(168, 168, 168);
+        border-radius: 50vh;
+        cursor: pointer;
+        border: 1px solid purple;
+        z-index: 2;
+    }
+    .toggleball{
+        width: 3.5vh;
+        height: 100%;
+        background-color: orange;
+        border-radius: 50vh;
+        position: relative;
+        transform: translateX(-3.75vh);
+    }
+    .moveright{
+        animation: moveright 1s forwards;
+    }
+    .moveleft{
+        animation: moveleft 1s forwards;
+    }
+    @keyframes moveright{
+        0% {transform: translateX(-3.75vh);}
+        100% {transform: translateX(3.75vh);}
+    }
+    @keyframes moveleft{
+        0% {transform: translateX(3.75vh);}
+        100% {transform: translateX(-3.75vh);}
     }
 </style>

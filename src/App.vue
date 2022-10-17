@@ -75,7 +75,6 @@ import Library from './components/Library.vue'
           this.renderWelcome = false
           this.User = x
           localStorage.setItem('CardDecks', JSON.stringify(this.data))
-          console.log(this.data)
         }
     },
     components: { Welcome, DisplayCard, TutorialSection, Library }
