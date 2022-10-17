@@ -21,7 +21,7 @@
 </script>
 
 <template>
-    <div class="backgrounddiv" :style="{background: animate == '3' ? 'center/100% url(../../public/background_1.jpg)' : ''}">
+    <div class="backgrounddiv" :style="{background: animate == '3' ? 'center/100% url(/background_1.jpg)' : ''}">
         <div class="button" style="right: 5vh; bottom: 5vh;" @click="returner()">
             Return
         </div>
