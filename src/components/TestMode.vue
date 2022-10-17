@@ -13,7 +13,9 @@
                     '3': false,
                     '4': false,
                     '5': false
-                }
+                },
+                interval: 'null',
+                changeCard: false
             }
         },
         mounted() {
@@ -26,8 +28,23 @@
             setTimeout(() => {this.loadingballs['3'] = true}, 600)
             setTimeout(() => {this.loadingballs['4'] = true}, 900)
             setTimeout(() => {this.loadingballs['5'] = true}, 1200)
-            setTimeout(() => {this.started = true}, 5000)
-            console.log(this.deck)
+            setTimeout(() => {
+                this.started = true
+                this.interval1 = setInterval(() => {
+                    this.flipped = !this.flipped
+                    let curr = this.deck.filter(x => x.id == this.currentCard.id)[0]
+                    if (this.deck.indexOf(curr) == this.deck.length - 1){
+                        clearInterval(this.interval1)
+                    }
+                    else if (this.changeCard){
+                        this.changeCard = false
+                        setTimeout(() => this.currentCard = this.deck[this.deck.indexOf(curr) + 1], 1000)
+                    }
+                    else{
+                        this.changeCard = true
+                    }
+                }, 10000)
+            }, 5000)
         },
         methods: {
             shuffle() {
