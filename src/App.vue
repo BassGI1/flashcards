@@ -35,6 +35,7 @@ import DisplayCard from './components/DisplayCard.vue';
 import TutorialSection from './components/TutorialSection.vue'
 import Library from './components/Library.vue'
 import Settings from './components/Settings.vue'
+import About from './components/About.vue'
   export default {
     data() {
         return {
@@ -76,7 +77,7 @@ import Settings from './components/Settings.vue'
           localStorage.setItem('CardDecks', JSON.stringify(this.data))
         }
     },
-    components: { Welcome, DisplayCard, TutorialSection, Library, Settings }
+    components: { Welcome, DisplayCard, TutorialSection, Library, Settings, About }
 }
 </script>
 
@@ -102,6 +103,7 @@ import Settings from './components/Settings.vue'
       </div>
       <Library v-if="!renderHello && currentTab == 'Your Library'" :data="data ? data.cardDecks : null" :user="User" @return="currentTab = ''" @newdeck="x => newDeck(x)"/>
       <Settings v-if="!renderHello && currentTab == 'Settings'" @return="currentTab = ''" :user="User"/>
+      <About v-if="!renderHello && currentTab == 'About'" @return="currentTab = ''"/>
     </div>
   </div>
 </template>
