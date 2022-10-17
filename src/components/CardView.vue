@@ -87,7 +87,7 @@ class Card{
     <div class="backgrounddiv">
         <nav class="topbar" v-if="!testmode">
             <div class="button" style="left: 5vh; top: 5vh;" @click="handleCreateClick()">Create New</div>
-            <div class="button" style="right: 5vh; top: 5vh;" @click="handleDeleteClick()">Delete Card</div>
+            <div class="button" style="right: 5vh; top: 5vh;" @click="handleDeleteClick()">Delete</div>
             <div class="topdiv">
                 <div v-if="deck && deck.cards.length" v-for="card in deck.cards">
                     <div class="topcarddiv" @click="currentCard = card">
@@ -141,10 +141,10 @@ class Card{
         <div class="button" style="left: 5vh; bottom: 5vh;" @click="returner()" v-if="!testmode">
             Return
         </div>
-        <div v-if="renderDeleteDeckDiv && !testmode" style="position: absolute; width: 100vw; height: 100vh; background-color: black; opacity: 0.5; display: flex; align-items: center; justify-content: center;">
+        <div v-if="renderDeleteDeckDiv && !testmode" style="position: absolute; width: 100vw; height: 100vh; background-color: black; opacity: 0.5; display: flex; align-items: center; justify-content: center; z-index: 5;">
         </div>
         <div v-if="renderDeleteDeckDiv" style="width: 60vh; height: 60vh; background-color: orange; position: absolute; border-radius: 2vh; color: purple; display: flex;
-         align-items: center; justify-content: center; flex-wrap: wrap;">
+         align-items: center; justify-content: center; flex-wrap: wrap; z-index: 6;">
             <h3 style="margin-bottom: -15vh;">Are you sure you want to delete this Deck?</h3>
             <div class="button" style="background-color: rgb(175, 122, 225); position: relative; margin-right: 1vw;" @click="deleter()">Yes</div>
             <div class="button" style="background-color: rgb(175, 122, 225); position: relative; margin-left: 1vw;" @click="() => {

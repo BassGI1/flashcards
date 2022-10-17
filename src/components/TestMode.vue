@@ -30,11 +30,12 @@
             setTimeout(() => {this.loadingballs['5'] = true}, 1200)
             setTimeout(() => {
                 this.started = true
-                this.interval1 = setInterval(() => {
+                this.interval = setInterval(() => {
                     this.flipped = !this.flipped
                     let curr = this.deck.filter(x => x.id == this.currentCard.id)[0]
                     if (this.deck.indexOf(curr) == this.deck.length - 1){
-                        clearInterval(this.interval1)
+                        clearInterval(this.interval)
+                        this.interval = null
                     }
                     else if (this.changeCard){
                         this.changeCard = false
@@ -62,6 +63,7 @@
 
 <template>
     <div class="backgrounddiv">
+        <h1 v-if="!interval" style="position: absolute; top: -0.5vh; font-size: 3rem">You're Finished! How did you do?</h1>
         <div class="loadingdiv" v-if="!started">
             <div class="loadingball load" style="margin-right: 6.25%;"></div>
             <div class="loadingball" v-bind:class="{load: loadingballs['2']}" style="margin-right: 6.25%;"></div>
