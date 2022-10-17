@@ -62,10 +62,10 @@ import TutorialSection from './TutorialSection.vue'
         </div>
     </div>
     <div v-if="tutorial" style="display: flex; align-items: center; justify-content: center; width: 100vw; height: 100vh; overflow: hidden; flex-wrap: wrap;" v-bind:class="{fade: fade}">
-        <TutorialSection :Image="'placeholder1.gif'"/>
-        <TutorialSection :Image="'placeholder2.gif'"/>
-        <TutorialSection :Image="'placeholder3.gif'"/>
-        <TutorialSection :Image="'placeholder4.gif'"/>
+        <TutorialSection :Image="'tutorial1.png'" :Text="'Create Flash Card Decks!'"/>
+        <TutorialSection :Image="'tutorial2.png'" :Text="'Create and Edit Cards in the Decks!'"/>
+        <TutorialSection :Image="'tutorial3.png'" :Text="'Test Yourself with Test Mode!'"/>
+        <TutorialSection :Image="'tutorial4.png'" :Text="'Share Your Creations with Friends!'"/>
         <div class="returnbutton" @click="handleNoTutorial()">Exit Tutorial</div>
     </div>
 </template>

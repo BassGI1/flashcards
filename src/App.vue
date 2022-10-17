@@ -95,10 +95,10 @@ import Library from './components/Library.vue'
         <DisplayCard :text="'About'" @tabchange="tabChange('About')"/>
       </div>
       <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; background-color: rgb(189, 0, 189); color: orange;" v-if="!renderHello && currentTab == 'Tutorial'">
-        <TutorialSection :Image="'placeholder1.gif'"/>
-        <TutorialSection :Image="'placeholder2.gif'"/>
-        <TutorialSection :Image="'placeholder3.gif'"/>
-        <TutorialSection :Image="'placeholder4.gif'"/>
+        <TutorialSection :Image="'tutorial1.png'" :Text="'Create Flash Card Decks!'"/>
+        <TutorialSection :Image="'tutorial2.png'" :Text="'Create and Edit Cards in the Decks!'"/>
+        <TutorialSection :Image="'tutorial3.png'" :Text="'Test Yourself with Test Mode!'"/>
+        <TutorialSection :Image="'tutorial4.png'" :Text="'Share Your Creations with Friends!'"/>
         <div class="returnbutton" @click="tabChange('')">Exit Tutorial</div>
       </div>
       <Library v-if="!renderHello && currentTab == 'Your Library'" :data="data ? data.cardDecks : null" :user="User" @return="currentTab = ''" @newdeck="x => newDeck(x)"/>
