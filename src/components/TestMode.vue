@@ -44,7 +44,7 @@
                     else{
                         this.changeCard = true
                     }
-                }, 10000)
+                }, 5000)
             }, 5000)
         },
         methods: {

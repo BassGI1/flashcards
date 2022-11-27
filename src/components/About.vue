@@ -25,7 +25,7 @@
         <div class="button" style="right: 5vh; bottom: 5vh;" @click="returner()">
             Return
         </div>
-        <h1>Flash Cards V1.0, built entirely by Bassam El-Naggar</h1>
+        <h1>Flash Cards V1.1, built entirely by Bassam El-Naggar</h1>
         <h4 style="position: absolute; bottom: 20vh" v-if="animate">{{ animate == '1' ? 'This page is a little empty . . .' : animate == '2' ? "Let's spice it up a little" : "That's better" }}</h4>
         <img src="/confusion.gif" alt="confusion" class="confusion" v-if="animate">
     </div>
