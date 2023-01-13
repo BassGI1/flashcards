@@ -127,7 +127,7 @@ import CardView from "./CardView.vue";
             localStorage.setItem('CardDecks', JSON.stringify({User: this.user, cardDecks: this.decks}))
         },
         generateRandomString(numChars) {
-            const regex = `qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM!@#$%^&*()_+-[]{}"',.: 1234567890?<>|\\\`~/`
+            const regex = `qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM!@#$%^&*()_+-[]{}"',.: 1234567890?<>|\\\`~/ΩωΘθ`
             const length = regex.length
             let str = ''
             for (let x = 0; x < numChars; ++x){
@@ -136,7 +136,7 @@ import CardView from "./CardView.vue";
             return str
         },
         hash(string) {
-            const regex = `qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM!@#$%^&*()_+-[]{}"',.: 1234567890?<>|\\\`~/`
+            const regex = `qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM!@#$%^&*()_+-[]{}"',.: 1234567890?<>|\\\`~/ΩωΘθ`
             const length = regex.length
             let newString = ''
             for (let i = 0; i < string.length; ++i){
@@ -145,7 +145,7 @@ import CardView from "./CardView.vue";
             return newString
         },
         dehash(string) {
-            const regex = `qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM!@#$%^&*()_+-[]{}"',.: 1234567890?<>|\\\`~/`
+            const regex = `qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM!@#$%^&*()_+-[]{}"',.: 1234567890?<>|\\\`~/ΩωΘθ`
             const length = regex.length
             let newString = ''
             for (let i = 0; i < string.length; ++i){
